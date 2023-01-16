@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<center><h1>QR code scanner 1</h1></center>
+<center>
+	<div style="width: 500px" id="reader"></div>
+	<div id="button"></div>
+</center>
+<script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
+<script>
+
+
+        
+function onScanSuccess(decodedText, decodedResult) {
+    // Handle on success condition with the decoded text or result.
+    console.log(`Scan result: ${decodedText}`, decodedResult);
+    var tag = document.createElement("p");
+	  var text = document.createTextNode(decodedText);
+	  tag.appendChild(text);
+	  var element = document.getElementById("button");
+	  element.appendChild(tag);
+	  html5QrcodeScanner.html5Qrcode.stop();
+    // ^ this will stop the scanner (video feed) and clear the scan area.
+}
+
+function onScanFailure(error) {
+  // handle scan failure, usually better to ignore and keep scanning.
+  // for example:
+  console.warn(`Code scan error = ${error}`);
+}
+
+
+
+let html5QrcodeScanner = new Html5QrcodeScanner(
+  "reader",
+  { fps: 10, qrbox: {width: 250, height: 250} },
+  /* verbose= */ false);
+
+console.log("Rendering")
+html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+console.log(html5QrcodeScanner)
+
+
+</script>
+
+{% endblock %}
